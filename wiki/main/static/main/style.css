@@ -1,0 +1,39 @@
+@media only screen and (min-width: 768px) {
+    .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
+    }
+}
+
+.root {
+	font-size: larger; /*Делает гиперссылки на основные страницы большими*/
+}
+
+img.main-image {
+	width: 300px;
+}
+
+img.additional-image {
+	width: 180px;
+}
+
+.home {
+  font-family: 'Lobster';
+}
+
+a {
+    color: #000000; /* Цвет обычной ссылки */ 
+    text-decoration: none; /* Убираем подчеркивание у ссылок */
+   }
+a:visited {
+    color: #000000; /* Цвет посещённой ссылки */
+   } 
+a:hover {
+    color: #FF0000; /* Цвет ссылки при наведении на нее курсора мыши */  
+    text-decoration: none;
+   }
+
+body {
+	background-color: #D3D3D3;
+}
+

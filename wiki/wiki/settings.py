@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'django_cleanup',
     'social_django',
     'crispy_forms',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [

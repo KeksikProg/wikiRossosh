@@ -1,0 +1,73 @@
+{% load static %}
+{% load bootstrap4 %}
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type"
+		content="text/html; charset = utf-8">
+		<meta name = 'viewport' 
+		content="width = device-width, inital-scale = 1, shrink-to-fit = no">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+		<link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
+		<title>{% block title %}{% endblock %} - Два Стула</title>
+	</head>
+
+	<body>
+		
+		<header class = 'mb-4'> <!--mb-4 Это стилевой класс, который установит большот отступ снизу у элемента -->
+			<h1 class ='display-1 text-center home'><a href="{% url 'main:home' %}">РоссошьWiki</a></h1> 
+		</header>
+
+		<!-- Тут будет навигация (она будет такая же как и надругтх моих сайтах) -->
+		<nav class = 'row ' >	
+			<ul class = 'col nav justify-content-end my-2 mr-5'>
+					
+				<li class = 'nav-item dropdown'><a href="#" class = 'nav-link dropdown-toggle' role = 'button' aria-haspopup = 'true' aria-expended = 'false'>Профиль</a>
+					{% if user.is_authenticated %}
+						<div class = 'dropdown-menu'> <!--Раскрывающеся меню--> 
+							<a class = 'dropdown-item' href="#">Изменить личные данные</a>
+																						<!-- % url 'main:change_info' % -->
+							<a class = 'dropdown-item' href="#">Изменить пароль</a>
+																						<!-- % url 'main:change_pass' % -->
+							<div class = 'dropdown-divider'></div> <!--Выступает в виде разделителя между пунктами-->
+							<a class = 'dropdown-item' href="#">Выйти</a>
+																						<!-- % url 'main:logout' % -->
+							<div class = 'dropdown-divider'></div>
+							<a class = 'dropdown-item' href="#">Удалить аккаунт</a>
+																						<!-- % url 'main:delete_user' % -->
+						</div>
+					{% else %}
+						<div class = 'dropdown-menu'> <!--Раскрывающеся меню--> 
+							<a class = 'dropdown-item' href="#">Вход</a> 
+							<!-- % url 'main:login' % -->
+							<a class = 'dropdown-item' href="#">Регистрация</a>
+							<!-- url 'main:user_register' % -->
+						</div>
+					{% endif %}
+				</li>
+				{% if user.is_superuser %}
+					<li class = 'nav-item dropdown'><a href="#" class = 'nav-link dropdown-toggle' role = 'button' aria-haspopup = 'true' aria-expended = 'false'>Админка</a>
+						<div class = 'dropdown-menu'> <!--Раскрывающеся меню--> 
+							<a class = 'dropdown-item' href="#">Добавить статью</a>
+							<!-- % url 'main:add_product' % -->
+						</div>
+					</li>
+				{% endif %}
+			</ul>
+		</nav>
+
+
+
+		
+		<section class = 'col  py-2 container'>
+			{% bootstrap_messages %}
+			{% block content %} 
+			{% endblock %} 
+		</section> 
+	</body>
+</html>

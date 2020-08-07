@@ -1,6 +1,7 @@
 from django.db import models
+from .util import get_timestamp_path
 
-
+'''Модели для статей, дополнительных фотографий и модели для редактирования статей'''
 class Article(models.Model):
 	title = models.CharField(
 		max_length = 50,
@@ -13,7 +14,7 @@ class Article(models.Model):
 		max_length = 100,
 		verbose_name = 'Местоположение')
 
-	image = ImageField(
+	image = models.ImageField(
 		blank = True,
 		upload_to = get_timestamp_path,
 		verbose_name = 'Фотография')
@@ -34,9 +35,8 @@ class AdditionalImage(models.Model):
 		verbose_name = 'Дополнительные фотографии')
 	image = models.ImageField(
 		upload_to = get_timestamp_path,
-		verbose_name = 'Фотография'б
+		verbose_name = 'Фотография',
 		help_text = 'Сюда вы можете вставить дополнительные фотографии для данной достопримечательности')
-
 class EditArticle(models.Model):
 	article = models.ForeignKey(
 		Article,
@@ -50,7 +50,7 @@ class EditArticle(models.Model):
 	content = models.TextField(
 		verbose_name = 'Описание',)
 
-	image = ImageField(
+	image = models.ImageField(
 		blank = True,
 		upload_to = get_timestamp_path,
 		verbose_name = 'Фотография')
@@ -59,6 +59,7 @@ class EditArticle(models.Model):
 		verbose_name = 'Правка'
 		verbose_name_plural = 'Правки'
 
+'''Модели для комментариев'''
 class Comment(models.Model):
 	article = models.ForeignKey(
 		Article,
