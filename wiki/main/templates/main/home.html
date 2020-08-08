@@ -1,6 +1,53 @@
 {% extends 'layout/basic.html' %}
+{% load static %}
+{% load thumbnail %}
+{% load bootstrap4 %}
 
-{% block title %}{% endblock %}
+{% block title %}Главная{% endblock %}
 
 {% block content %}
+
+<!--<form class = 'col-md-auto form-inline' style = 'float: left;'> 
+		% bootstrap_form form show_label=False %					Тут потом в будущем будет поиск
+		% bootstrap_button content='Найти' button_type='submit' %
+	</form>-->
+
+{% if articles %}
+	<ul class = 'list-unstyled'>
+		{% for article in articles %}
+			<li class = 'media my-3 ml-3 p-3 border' style = 'border-radius: 15px; background-color: white'>
+				<p>
+					{% if article.image %}
+						{% thumbnail article.image 'default' as timg %}
+						<a href="#"><img src="{{ timg.url }}" class = 'mr-3'></a>
+						<!-- % url 'main:detail' pk=article.pk % -->
+					{% else %}
+						<p></p>
+					{% endif %}
+				</p>
+				<div class = 'media-body'>
+					<a href="#">
+						<!--% url 'main:detail' pk=article.pk %-->
+						<h3><p>{{ article.title }}</p></h3> 
+					</a>
+					<a href="#">
+						<!-- Тут потом вставить на rubric_view -->
+						<h5><p>{{ article.rubric.name }}</p></h5>
+					</a>
+					<div>{{ article.content }}</div>
+					<div>{{ article.street }}</div>
+					<p class = 'text-right font-weight-bold'>Добавлено: {{ article.created_at }}</p>
+					{% if user.is_staff %}
+						<a href="#" class = 'mr-3'>Удалить</a>
+						<!-- % url 'main:article_delete' pk=article.pk % -->
+						<a href="#">Изменить</a>
+						<!-- % url 'main:article_change' pk=article.pk % -->
+					{% endif %}
+				</div>
+			</li>
+		{% endfor %}
+	</ul>
+{% endif %}
+
+
 {% endblock %}

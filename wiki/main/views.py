@@ -1,6 +1,10 @@
 from django.shortcuts import render
 
+from .models import Article, Rubric
+
 def home(request):
-	return render(request, 'main/home.html')
+	articles = Article.objects.all()
+	context = {'articles':articles}
+	return render(request, 'main/home.html', context)
 
 # Create your views here.
