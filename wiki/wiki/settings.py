@@ -22,6 +22,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('secret_key')
 LOGIN_REDIRECT_URL = 'main:home' 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
 EMAIL_PORT = os.getenv('email_port') # Порт через который будут отправляется письма
@@ -50,13 +51,10 @@ THUMBNAIL_ALIASES = {
         'default' : {
             'size' : (96, 96),
             'crop' : 'scale',
-        },
-        'dts' : {
-            'size' : (192, 192),
-            'crop' : 'scale',
         }
     }
 }
+
 THUMBNAIL_BASEDIR = 'thumbs'
 
 # Application definition
@@ -101,6 +99,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'social_django.context_processors.backends', # это и одно ниже для регистрации через соц сети
                 'social_django.context_processors.login_redirect',
+                'main.middle.rubric_context_proccessor',
             ],
         },
     },

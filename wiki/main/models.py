@@ -69,8 +69,7 @@ class AdditionalImage(models.Model):
 		verbose_name = 'Дополнительные фотографии')
 	image = models.ImageField(
 		upload_to = get_timestamp_path,
-		verbose_name = 'Фотография',
-		help_text = 'Сюда вы можете вставить дополнительные фотографии для данной достопримечательности')
+		verbose_name = 'Фотография',)
 class EditArticle(models.Model):
 	article = models.ForeignKey(
 		Article,

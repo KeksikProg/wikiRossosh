@@ -25,8 +25,10 @@
 
 		<!-- Тут будет навигация (она будет такая же как и надругтх моих сайтах) -->
 		<nav class = 'row ' >	
-			<ul class = 'col nav justify-content-end my-2 mr-5'>
+			<ul class = 'col nav justify-content-end my-2 mr-5 pr-5'>
 					
+				<!-- profile -->
+
 				<li class = 'nav-item dropdown'><a href="#" class = 'nav-link dropdown-toggle' role = 'button' aria-haspopup = 'true' aria-expended = 'false'>Профиль</a>
 					{% if user.is_authenticated %}
 						<div class = 'dropdown-menu'> <!--Раскрывающеся меню--> 
@@ -50,21 +52,41 @@
 						</div>
 					{% endif %}
 				</li>
+
+				<!-- admin panel -->
+
 				{% if user.is_superuser %}
-					<li class = 'nav-item dropdown'><a href="#" class = 'nav-link dropdown-toggle' role = 'button' aria-haspopup = 'true' aria-expended = 'false'>Админка</a>
+					<li class = 'nav-item dropdown ml-3'><a href="#" class = 'nav-link dropdown-toggle' role = 'button' aria-haspopup = 'true' aria-expended = 'false'>Админка</a>
 						<div class = 'dropdown-menu'> <!--Раскрывающеся меню--> 
-							<a class = 'dropdown-item' href="#">Добавить статью</a>
+							<a class = 'dropdown-item' href="{% url 'main:add_article' %}">Добавить статью</a>
 							<!-- % url 'main:add_product' % -->
 						</div>
 					</li>
 				{% endif %}
+
+
 			</ul>
 		</nav>
 
+		<!-- Rubrics -->
 
+		<ul class="nav mb-4 ml-4">
+			{% for rubric in rubrics %}
+	  			<li class="nav-item">
+	    			<a href="#" class = 'nav-link root'>   
+	    								<!-- url 'main:by_rubric' pk=rubric.pk                    Жопа не забудь про рубрики --> 
+						{{ rubric.name }}
+					</a>
+	  			</li>
+	  		{% endfor %}
+	  		<li class = 'nav-item'>
+	  			<a class="nav-link root" href="{% url 'main:other' page='about' %}">О сайте</a>
+	  		</li>
+  		</ul>
 
+  		<!-- block content -->
 		
-		<section class = 'col  py-2 container'>
+		<section class = 'col py-2 container'>
 			{% bootstrap_messages %}
 			{% block content %} 
 			{% endblock %} 
