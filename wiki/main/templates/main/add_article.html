@@ -1,6 +1,6 @@
 {% extends 'layout/basic.html' %}
 
-{% load crispy_forms_tags %}
+
 {% load bootstrap4 %}
 
 {% block title %}Создание статьи{% endblock %}
@@ -9,8 +9,8 @@
 <h2>Создание статьи</h2>
 <form method = 'post' enctype="multipart/form-data">
 	{% csrf_token %}
-	{% crispy form %}
-	<!-- {% crispy formset %} -->
-	<!-- {% buttons submit='Создать' %}{% endbuttons %} -->
+	{% bootstrap_form forms %}
+	{% bootstrap_formset formset %}
+	{% buttons submit='Создать' %}{% endbuttons %}
 </form>
 {% endblock %}

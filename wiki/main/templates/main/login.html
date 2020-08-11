@@ -1,0 +1,27 @@
+{% extends 'layout/basic.html' %}
+
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+	<div class = 'text ml-3 p-3'>
+		<h2>Вход</h2>
+		{% if user.is_authenticated %}
+			<p>Вы уже выполнили вход</p>
+		{% else %}
+			<form method="post">
+				{% csrf_token %}
+				{{ form|crispy }}
+				<input type="hidden" name="next" value = '{{ next }}'>
+				{% buttons submit='Войти' %}{% endbuttons %}
+			</form>
+			<p><a href="{% url 'social:begin' 'vk-oauth2' %}">Войти через ВКонтакте</a></p>
+			<p><a href="#">Зарегистрироваться</a></p>
+			<!-- % url 'main:register' % -->
+			<p><a href="#">Сбросить пароль</a></p>
+			<!-- % url 'main:password_reset_form' % -->
+		{% endif %}
+	</div>
+{% endblock %}

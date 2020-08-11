@@ -45,8 +45,7 @@
 						</div>
 					{% else %}
 						<div class = 'dropdown-menu'> <!--Раскрывающеся меню--> 
-							<a class = 'dropdown-item' href="#">Вход</a> 
-							<!-- % url 'main:login' % -->
+							<a class = 'dropdown-item' href="{% url 'main:login' %}">Вход</a> 
 							<a class = 'dropdown-item' href="#">Регистрация</a>
 							<!-- url 'main:user_register' % -->
 						</div>
@@ -86,7 +85,7 @@
 
   		<!-- block content -->
 		
-		<section class = 'col py-2 container'>
+		<section class = 'col py-3 container'>
 			{% bootstrap_messages %}
 			{% block content %} 
 			{% endblock %} 

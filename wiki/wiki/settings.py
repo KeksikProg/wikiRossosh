@@ -49,7 +49,7 @@ AUTHENTICATION_BACKENDS = ( # Список классов реализующий
 THUMBNAIL_ALIASES = {
     '' : {
         'default' : {
-            'size' : (96, 96),
+            'size' : (201, 201),
             'crop' : 'scale',
         }
     }

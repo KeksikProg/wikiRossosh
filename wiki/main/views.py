@@ -5,6 +5,7 @@ from django.template import TemplateDoesNotExist
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
 
 from .models import Article, Rubric
 from .forms import ArticleForm, AIFormSet
@@ -29,19 +30,26 @@ def other(request, page):
 @staff_member_required
 def add_article(request):
 	if request.method == 'POST':
-		form = ArticleForm(request.POST, request.FILES)
-		if form.is_valid():
-			article = form.save()
+		forms = ArticleForm(request.POST, request.FILES)
+		if forms.is_valid():
+			article = forms.save()
 			formset = AIFormSet(request.POST, request.FILES, instance = article)
 			if formset.is_valid():
 				formset.save()
 				messages.add_message(request, messages.SUCCESS, message = 'Статья успешно написана!')
 				return redirect('main:home')
 	else:
-		form = ArticleForm(initial = {})
+		forms = ArticleForm(initial = {})
 		formset = AIFormSet()
-	context = {'form':form, 'formset':formset}
+	context = {'forms':forms, 'formset':formset}
 	return render (request, 'main/add_article.html', context)
+
+# views действия с пользователями
+
+class ALogin(LoginView):
+	template_name = 'main/login.html'
+class ALogout(LogoutView):
+	template_name = 'main/logout.html'
 
 
 

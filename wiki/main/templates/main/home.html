@@ -3,6 +3,7 @@
 {% load thumbnail %}
 {% load bootstrap4 %}
 
+
 {% block title %}Главная{% endblock %}
 
 {% block content %}
@@ -10,16 +11,16 @@
 <!--<form class = 'col-md-auto form-inline' style = 'float: left;'> 
 		% bootstrap_form form show_label=False %					Тут потом в будущем будет поиск
 		% bootstrap_button content='Найти' button_type='submit' %
-	</form>-->
+	</form>--> 
 
 {% if articles %}
 	<ul class = 'list-unstyled'>
 		{% for article in articles %}
-			<li class = 'media my-3 ml-3 p-3 border' style = 'border-radius: 15px; background-color: white'>
+			<li class = ' media my-3 ml-3 p-3 border text' style = ''>
 				<p>
 					{% if article.image %}
 						{% thumbnail article.image 'default' as timg %}
-						<a href="#"><img src="{{ timg.url }}" class = 'mr-3'></a>
+						<a href="#"><img src="{{ timg.url }}" class = 'mr-3 main-image'></a>
 						<!-- % url 'main:detail' pk=article.pk % -->
 					{% else %}
 						<p></p>
