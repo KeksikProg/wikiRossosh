@@ -18,7 +18,7 @@
 				{% buttons submit='Войти' %}{% endbuttons %}
 			</form>
 			<p><a href="{% url 'social:begin' 'vk-oauth2' %}">Войти через ВКонтакте</a></p>
-			<p><a href="#">Зарегистрироваться</a></p>
+			<p><a href="{% url 'main:register' %}">Зарегистрироваться</a></p>
 			<!-- % url 'main:register' % -->
 			<p><a href="#">Сбросить пароль</a></p>
 			<!-- % url 'main:password_reset_form' % -->

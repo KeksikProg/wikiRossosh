@@ -6,9 +6,12 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
+from django.views.generic import CreateView
+from django.contrib.auth.models import User
+from django.urls import reverse_lazy
 
 from .models import Article, Rubric
-from .forms import ArticleForm, AIFormSet
+from .forms import ArticleForm, AIFormSet, UserRegForm
 
 
 # views у которых нет определенного разделения
@@ -50,6 +53,13 @@ class ALogin(LoginView):
 	template_name = 'main/login.html'
 class ALogout(LogoutView):
 	template_name = 'main/logout.html'
+
+# views for register user
+class UserRegView(CreateView):
+	model = User
+	template_name = 'main/register.html'
+	form_class = UserRegForm
+	success_url = reverse_lazy('main:home')
 
 
 
