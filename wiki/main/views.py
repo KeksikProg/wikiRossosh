@@ -9,9 +9,12 @@ from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
 from django.views.generic import CreateView
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView
+from django.contrib.auth.views import PasswordResetConfirmView, PasswordResetCompleteView
 
 from .models import Article, Rubric
 from .forms import ArticleForm, AIFormSet, UserRegForm
+
 
 
 # views у которых нет определенного разделения
@@ -28,6 +31,8 @@ def other(request, page):
 	except TemplateDoesNotExist: # Если не находит такуб страницу
 		raise Http404 # То ошибка 404 (страница не найдена)
 	return HttpResponse(template.render(request = request))
+
+
 
 # views связанные с статьями
 @staff_member_required
@@ -47,12 +52,13 @@ def add_article(request):
 	context = {'forms':forms, 'formset':formset}
 	return render (request, 'main/add_article.html', context)
 
-# views действия с пользователями
-
+# views login and logout
 class ALogin(LoginView):
 	template_name = 'main/login.html'
 class ALogout(LogoutView):
 	template_name = 'main/logout.html'
+
+
 
 # views for register user
 class UserRegView(CreateView):
@@ -60,6 +66,22 @@ class UserRegView(CreateView):
 	template_name = 'main/register.html'
 	form_class = UserRegForm
 	success_url = reverse_lazy('main:home')
+
+
+
+# views for password reset
+class UserPassResetView(PasswordResetView):
+	template_name = 'main/password_reset_form.html'
+	subject_template_name = 'email/password_reset_subj.txt'
+	email_template_name = 'email/password_reset_body.html'
+	success_url = reverse_lazy('main:password_reset_done')
+
+class UserPassResetDone(PasswordResetDoneView):
+	template_name = 'main/password_reset_done.html'
+
+class UserPassResetConfirmView(PasswordResetConfirmView):
+	template_name = 'main/password_reset_confirm.html'
+	success_url = reverse_lazy('main:login')
 
 
 
