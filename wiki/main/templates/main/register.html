@@ -15,8 +15,8 @@
 				{% csrf_token %}
 				{% crispy form %}
 			</form>
+			<p class = 'my-3'><a href="{% url 'main:login' %}">Войти</a></p>
+			<p><a href="{% url 'social:begin' 'vk-oauth2' %}">Войти через ВКонтакте</a></p>
 		{% endif %}
-		<p class = 'my-3'><a href="{% url 'main:login' %}">Войти</a></p>
-		<p><a href="{% url 'social:begin' 'vk-oauth2' %}">Войти через ВКонтакте</a></p>
 	</div>
 {% endblock %}
