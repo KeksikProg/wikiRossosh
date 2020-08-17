@@ -11,9 +11,20 @@ from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView
 from django.contrib.auth.views import PasswordResetConfirmView, PasswordResetCompleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import UpdateView, DeleteView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import get_object_or_404
+from django.contrib.auth import logout
+
+
+
+
+
 
 from .models import Article, Rubric
-from .forms import ArticleForm, AIFormSet, UserRegForm
+from .forms import ArticleForm, AIFormSet, UserRegForm, ChangeUserInfoForm
+
 
 
 
@@ -60,12 +71,54 @@ class ALogout(LogoutView):
 
 
 
-# views for register user
+# views for user
 class UserRegView(CreateView):
 	model = User
 	template_name = 'main/register.html'
 	form_class = UserRegForm
 	success_url = reverse_lazy('main:login')
+
+class ChangeUserInfo(SuccessMessageMixin, UpdateView, LoginRequiredMixin):
+	model = User
+	template_name = 'main/change_user_info.html'
+	form_class = ChangeUserInfoForm
+	success_url = reverse_lazy('main:home')
+	success_message = 'Личные данные пользователя были успешно изменены!'
+
+	def dispatch(self, request, *args, **kwargs):
+		self.user_id = request.user.pk
+		return super().dispatch(request, *args, **kwargs)
+
+	def get_object(self, queryset = None):
+		if not queryset:
+			queryset = self.get_queryset()
+		return get_object_or_404(queryset, pk = self.user_id)
+
+class ChangeUserPass(LoginRequiredMixin, SuccessMessageMixin, PasswordChangeView):
+	template_name = 'main/change_pass.html'
+	success_url = reverse_lazy('main:home')
+	success_message = 'Пароль успешно изменен!'
+
+class DeleteUserView(LoginRequiredMixin, DeleteView, SuccessMessageMixin):
+	model = User
+	template_name = 'main/delete_user.html'
+	success_url = reverse_lazy('main:home')
+
+	def dispatch(self, request, *args, **kwargs):
+		self.user_id = request.user.pk
+		return super().dispatch(request, *args, **kwargs)
+
+	def post(self, request, *args, **kwargs):
+		logout(request)
+		messages.add_message(request, messages.SUCCESS, message = 'Пользователь успешно удален!')
+		return super().post(request, *args, **kwargs)
+
+	def get_object(self, queryset = None):
+		if not queryset:
+			queryset = self.get_queryset()
+		return get_object_or_404(queryset, pk = self.user_id)
+
+
 
 
 

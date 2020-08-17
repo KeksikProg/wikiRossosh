@@ -32,16 +32,13 @@
 
 				<li class = 'nav-item dropdown'><a href="#" class = 'nav-link dropdown-toggle' role = 'button' aria-haspopup = 'true' aria-expended = 'false'>Профиль</a>
 					{% if user.is_authenticated %}
-						<div class = 'dropdown-menu'> <!--Раскрывающеся меню--> 
-							<a class = 'dropdown-item' href="#">Изменить личные данные</a>
-																						<!-- % url 'main:change_info' % -->
-							<a class = 'dropdown-item' href="#">Изменить пароль</a>
-																						<!-- % url 'main:change_pass' % -->
-							<div class = 'dropdown-divider'></div> <!--Выступает в виде разделителя между пунктами-->
+						<div class = 'dropdown-menu'> 
+							<a class = 'dropdown-item' href="{% url 'main:changeuserinfo' %}">Изменить личные данные</a>
+							<a class = 'dropdown-item' href="{% url 'main:changeuserpass' %}">Изменить пароль</a>
+							<div class = 'dropdown-divider'></div> 
 							<a class = 'dropdown-item' href="{% url 'main:logout' %}">Выйти</a>
 							<div class = 'dropdown-divider'></div>
-							<a class = 'dropdown-item' href="#">Удалить аккаунт</a>
-																						<!-- % url 'main:delete_user' % -->
+							<a class = 'dropdown-item' href="{% url 'main:deleteuser' %}">Удалить аккаунт</a>
 						</div>
 					{% else %}
 						<div class = 'dropdown-menu'> <!--Раскрывающеся меню--> 
@@ -86,7 +83,9 @@
   		<!-- block content -->
 		
 		<section class = 'col py-3 container'>
-			{% bootstrap_messages %}
+			<div class = 'py-3 pl-3 p-3'>
+				{% bootstrap_messages %}
+			</div>
 			{% block content %} 
 			{% endblock %} 
 		</section> 

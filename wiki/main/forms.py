@@ -92,3 +92,25 @@ class UserRegForm(forms.ModelForm):
 	class Meta:
 		model = User
 		fields = ('username', 'email', 'pass1', 'pass2', 'first_name', 'last_name')	
+
+
+class ChangeUserInfoForm(forms.ModelForm):
+	class Meta:
+		model = User
+		fields = ('username', 'email', 'first_name', 'last_name')
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.helper = FormHelper()
+		self.helper.layout = Layout(
+			Row(
+				Column('username', css_class = 'form-group col-md-6 mb-0'),
+				css_class = 'form_row'),
+			Row(
+				Column('email', css_class = 'form-group col-md-6 mb-0'),
+				css_class = 'form_row'),
+			Row(
+				Column('first_name', css_class = 'form-group col-md-4 mb-0'),
+				Column('last_name', css_class = 'form-group col-md-4 mb-0'),
+				css_class = 'form_row'),
+			Submit('submit', 'Сменить', css_class = 'my-3'))

@@ -16,7 +16,7 @@
 {% if articles %}
 	<ul class = 'list-unstyled'>
 		{% for article in articles %}
-			<li class = ' media my-3 ml-3 p-3 border text'>
+			<li class = 'my-3 ml-3 p-3 media border text'>
 				<p>
 					{% if article.image %}
 						{% thumbnail article.image 'default' as timg %}
