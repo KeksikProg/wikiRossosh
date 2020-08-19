@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 
-from .models import Article, AdditionalImage
+from .models import Article, AdditionalImage, Comment
 
 # for articles
 class ArticleForm(forms.ModelForm):
@@ -114,3 +114,16 @@ class ChangeUserInfoForm(forms.ModelForm):
 				Column('last_name', css_class = 'form-group col-md-4 mb-0'),
 				css_class = 'form_row'),
 			Submit('submit', 'Сменить', css_class = 'my-3'))
+
+class CommentForm(forms.ModelForm):
+	class Meta:
+		model = Comment
+		fields = '__all__'
+		widgets = {'article':forms.HiddenInput, 'author':forms.HiddenInput}
+
+	# def __init__(self, *args, **kwargs):
+	# 	super().__init__(*args, **kwargs)
+	# 	self.helper = FormHelper()
+	# 	self.helper.layout = Layout(
+	# 		Field('content', css_class = 'form-group col-md-6 mb-0,'),			
+	# 		Submit('submit', 'Оставить комментарий', css_class = 'my-3'))

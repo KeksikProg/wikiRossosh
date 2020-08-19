@@ -3,7 +3,8 @@ from django.urls import path
 
 from .views import home, other, add_article, ALogin, ALogout, UserRegView
 from .views import UserPassResetView, UserPassResetDone, UserPassResetConfirmView
-from .views import ChangeUserInfo, ChangeUserPass, DeleteUserView
+from .views import ChangeUserInfo, ChangeUserPass, DeleteUserView, article_change_staff, article_delete
+from .views import article_detail
 
 
 urlpatterns = [
@@ -18,6 +19,9 @@ urlpatterns = [
 
 	# urls for articles
 	path('article/add_article/', add_article, name = 'add_article'),
+	path('article/article_change_staff/<int:pk>/', article_change_staff, name = 'change_staff'),
+	path('article/article_delete/<int:pk>/', article_delete, name = 'article_delete'),
+	path('article/detail/<int:pk>/', article_detail, name = 'article_detail'),
 
 
 

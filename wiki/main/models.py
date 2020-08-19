@@ -56,12 +56,12 @@ class Article(models.Model):
 	def delete(self, *args, **kwargs):
 		for ai in self.additionalimage_set.all():
 			ai.delete()
-		super().delete(self, *args, **kwargs)
+		super().delete(*args, **kwargs)
 
 	class Meta:
 		verbose_name = 'Статья'
 		verbose_name_plural = 'Статьи'
-		ordering = ['title']
+		ordering = ['-created_at']
 class AdditionalImage(models.Model):
 	article = models.ForeignKey(
 		Article,

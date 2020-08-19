@@ -16,14 +16,15 @@ from django.views.generic.edit import UpdateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 
 
 
 
 
 
-from .models import Article, Rubric
-from .forms import ArticleForm, AIFormSet, UserRegForm, ChangeUserInfoForm
+from .models import Article, Rubric, Comment
+from .forms import ArticleForm, AIFormSet, UserRegForm, ChangeUserInfoForm, CommentForm
 
 
 
@@ -62,6 +63,61 @@ def add_article(request):
 		formset = AIFormSet()
 	context = {'forms':forms, 'formset':formset}
 	return render (request, 'main/add_article.html', context)
+
+@staff_member_required
+def article_change_staff(request, pk):
+	article = get_object_or_404(Article, pk = pk)
+	if request.method == 'POST':
+		form = ArticleForm(request.POST, request.FILES, instance = article)
+		if form.is_valid():
+			article = form.save()
+			formset = AIFormSet(request.POST, request.FILES, instance = article)
+			if formset.is_valid():
+				formset.save()
+				messages.add_message(request, messages.SUCCESS, message = 'Статья изменена!')
+				return redirect('main:home')
+	else:
+		form = ArticleForm(instance = article)
+		formset = AIFormSet(instance = article)
+	context = {'form':form, 'formset':formset}
+	return render (request, 'main/article_change_staff.html', context)
+
+@staff_member_required
+def article_delete(request, pk):
+	article = get_object_or_404(Article, pk = pk)
+	if request.method == 'POST':
+		article.delete()
+		messages.add_message(request, messages.SUCCESS, message = 'Статья удалена')
+		return redirect('main:home')
+	else:
+		context = {'article':article}
+		return render (request, 'main/article_delete.html', context)
+
+@login_required(login_url = '/user/login/')
+def article_detail(request, pk):
+	article = Article.objects.get(pk = pk)
+	ai = article.additionalimage_set.all()
+	comment = Comment.objects.filter(article = pk)
+	initial = {'article':article.pk}
+	if request.user.is_authenticated:
+		initial['author'] = request.user.username
+	form_class = CommentForm
+	form = form_class(initial = initial)
+	if request.method == 'POST':
+		c_form = form_class(request.POST)
+		if c_form.is_valid():
+			response = c_form.save()
+			response.author = request.user.username
+			response.save()
+			messages.add_message(request, messages.SUCCESS, message = 'Комментарий успешно добавлен')
+			return redirect('main:home')
+		else:
+			form = c_form
+			messages.add_message(request, messages.WARNING, message = 'Комментарий не был добавлен')	
+	context = {'article' : article, 'ai' : ai, 'comment':comment, 'form':form}
+	return render(request, 'main/detail.html', context)
+
+
 
 # views login and logout
 class ALogin(LoginView):

@@ -1,0 +1,67 @@
+{% extends 'layout/basic.html' %}
+
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+{% block title %}Статья {{ article.title }}{% endblock %}
+
+{% block content %}
+
+<!-- Статья -->
+<div class = 'text ml-3 p-3'>
+<div class = 'container-fluid mt-3'>
+	<div class = 'row'>
+		{% if article.image %}
+		<div class = 'col-md-auto'>
+			<img class = 'main-image' src="{{ article.image.url }}">
+		</div>
+		{% endif %}
+		<div class = 'col'>
+			<h2>{{ article.title }}</h2>
+			<p>{{ article.rubric }}</p>
+			<p>{{ article.content }}</p>
+		</div>
+	</div>
+</div>
+{% if ai %}
+<div class = 'col-md-auto d-flex justify-content-between dlex-wrap mt-5 '>
+	{% for a in ai %}
+	<div>
+		<img class = 'additional-image' src="{{ a.image.url }}">
+	</div>
+	{% endfor %}
+</div>
+{% endif %}
+
+<!-- Комментарии -->
+<h4 class = 'mt-5'>Новый комментарий</h4>
+{% if user.is_authenticated %}
+	<form method="post">
+		{% csrf_token %}
+		{{ form|crispy }}
+		{% buttons submit='Оставить комментарий' %}{% endbuttons %}
+	</form>
+{% else %}
+	<p>Чтобы оставлять комментарии на статьях нужно зайти в аккаунт</p>
+	<p><a href="{% url 'main:login' %}">Войти</a></p>
+{% endif %}
+{% if comment %}
+<div class = 'mt-5'>
+	{% for comm in comment %}
+	<div class = 'my-2 p-2 border'>
+		<h5>{{ comm.author }}</h5>
+		<p>{{ comm.content }}</p>
+		<p class = 'text-right font-italic'>{{ comm.created_at }}</p>
+		{% if user.is_superuser %}
+		<a href="#">Удалить</a> 
+		<!-- % url 'main:comment_delete' comments=comm.pk % -->
+		{% endif %}
+ 		{% if user.username == comment.author %}
+ 			<a href="#">Удалить</a> 
+ 		{% endif %}
+	</div>
+	{% endfor %}
+	{% endif %}
+</div>
+</div>
+{% endblock %}

@@ -11,8 +11,7 @@
 }
 
 .main-image {
-	border-radius: 100px;
-  box-shadow: 0 0 15px;
+ width: 380px;
 }
 
 img.additional-image {
@@ -47,5 +46,8 @@ body {
   background-color: white;
 }
 
-img.first_iame
+.first-image {
+  border-radius: 100px;
+  box-shadow: 0 0 15px;
+}
 

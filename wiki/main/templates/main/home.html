@@ -20,15 +20,13 @@
 				<p>
 					{% if article.image %}
 						{% thumbnail article.image 'default' as timg %}
-						<a href="#"><img src="{{ timg.url }}" class = 'mr-5 main-image'></a>
-						<!-- % url 'main:detail' pk=article.pk % -->
+						<a href="{% url 'main:article_detail' pk=article.pk %}"><img src="{{ timg.url }}" class = 'mr-5 main-image first-image'></a>
 					{% else %}
 						<p></p>
 					{% endif %}
 				</p>
 				<div class = 'media-body'>
-					<a href="#">
-						<!--% url 'main:detail' pk=article.pk %-->
+					<a href="{% url 'main:article_detail' pk=article.pk %}">
 						<h3><p>{{ article.title }}</p></h3> 
 					</a>
 					<a href="#">
@@ -39,10 +37,8 @@
 					<div>{{ article.street }}</div>
 					<p class = 'text-right font-weight-bold'>Добавлено: {{ article.created_at }}</p>
 					{% if user.is_staff %}
-						<a href="#" class = 'mr-3'>Удалить</a>
-						<!-- % url 'main:article_delete' pk=article.pk % -->
-						<a href="#">Изменить</a>
-						<!-- % url 'main:article_change' pk=article.pk % -->
+						<a href="{% url 'main:article_delete' pk=article.pk %}" class = 'mr-3'>Удалить</a>
+						<a href="{% url 'main:change_staff' pk=article.pk %}">Изменить</a>
 					{% endif %}
 				</div>
 			</li>
