@@ -85,7 +85,7 @@ class UserRegForm(forms.ModelForm):
 			Row(
 				Column('first_name', css_class = 'form-group col-md-4 mb-0'),
 				Column('last_name', css_class = 'form-group col-md-4 mb-0'),
-				css_class = 'form_row'),
+				css_class = 'form-row'),
 
 			Submit('submit', 'Зарегистрироваться'))
 
@@ -105,14 +105,14 @@ class ChangeUserInfoForm(forms.ModelForm):
 		self.helper.layout = Layout(
 			Row(
 				Column('username', css_class = 'form-group col-md-6 mb-0'),
-				css_class = 'form_row'),
+				css_class = 'form-row'),
 			Row(
 				Column('email', css_class = 'form-group col-md-6 mb-0'),
-				css_class = 'form_row'),
+				css_class = 'form-row'),
 			Row(
 				Column('first_name', css_class = 'form-group col-md-4 mb-0'),
 				Column('last_name', css_class = 'form-group col-md-4 mb-0'),
-				css_class = 'form_row'),
+				css_class = 'form-row'),
 			Submit('submit', 'Сменить', css_class = 'my-3'))
 
 class CommentForm(forms.ModelForm):
@@ -127,3 +127,22 @@ class CommentForm(forms.ModelForm):
 	# 	self.helper.layout = Layout(
 	# 		Field('content', css_class = 'form-group col-md-6 mb-0,'),			
 	# 		Submit('submit', 'Оставить комментарий', css_class = 'my-3'))
+
+from .models import EditArticle
+class EditArticleForm(forms.ModelForm):
+	class Meta:
+		model = EditArticle
+		fields = ('title', 'content', 'image')
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.helper = FormHelper()
+		self.helper.layout = Layout(
+			Row(
+				Column('title', css_class = 'form-group col-md-6 mb-0'),
+				css_class = 'form-row'),
+			
+			'content',
+			'image',
+
+			Submit('submit', 'Редактировать'))

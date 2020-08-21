@@ -1,0 +1,15 @@
+{% extends 'layout/basic.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Изменение статьи{% endblock %}
+
+{% block content %}
+<div class = 'text ml-3 p-3'>
+	<h2>Правки для статьи</h2>
+	<form method="post">
+		{% csrf_token %}
+		{% crispy form %}
+	</form>
+</div>
+{% endblock %}

@@ -13,10 +13,11 @@
 	<div class = 'row'>
 		{% if article.image %}
 		<div class = 'col-md-auto'>
-			<img class = 'main-image' src="{{ article.image.url }}">
+			<img class = 'main-image first-image' src="{{ article.image.url }}">
 		</div>
 		{% endif %}
 		<div class = 'col'>
+			<h5 class = 'text-right'><a href="{% url 'main:article_change_user' pk=article.pk %}">Исправить ошибку</a></h5>
 			<h2>{{ article.title }}</h2>
 			<p>{{ article.rubric }}</p>
 			<p>{{ article.content }}</p>
@@ -52,12 +53,10 @@
 		<h5>{{ comm.author }}</h5>
 		<p>{{ comm.content }}</p>
 		<p class = 'text-right font-italic'>{{ comm.created_at }}</p>
-		{% if user.is_superuser %}
-		<a href="#">Удалить</a> 
-		<!-- % url 'main:comment_delete' comments=comm.pk % -->
-		{% endif %}
- 		{% if user.username == comment.author %}
- 			<a href="#">Удалить</a> 
+ 		{% if user.username == comm.author %}
+ 			<a href="{% url 'main:comment_delete' pk=comm.pk %}">Удалить</a> 
+ 		{% elif user.is_staff %}
+ 			<a href="{% url 'main:comment_delete' pk=comm.pk %}">Удалить</a> 
  		{% endif %}
 	</div>
 	{% endfor %}

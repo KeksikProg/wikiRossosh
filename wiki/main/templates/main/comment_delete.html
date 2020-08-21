@@ -1,0 +1,16 @@
+{% extends 'layout/basic.html' %}
+
+{% load bootstrap4 %}
+
+{% block title %}Удалить комментарий{% endblock %}
+
+{% block content %}
+<div class = 'text ml-3 p-3'>
+	<h2>Удалить комментарий пользователя "{{ comment.author }}" под статьёй "{{ comment.article.title }}"</h2>
+	<h3>Содержание комментария: <br> "{{ comment.content }}"</h3>
+	<form method = 'post' class = 'my-3'>
+		{% csrf_token %}
+		{% buttons submit='Удалить' %}{% endbuttons %}
+	</form>
+</div>
+{% endblock %}

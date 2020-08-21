@@ -82,6 +82,32 @@ def article_change_staff(request, pk):
 	context = {'form':form, 'formset':formset}
 	return render (request, 'main/article_change_staff.html', context)
 
+
+
+from .forms import EditArticleForm
+from .models import EditArticle
+@login_required(login_url = '/user/login/')
+def article_change_user(request, pk):
+	article = get_object_or_404(Article, pk = pk)
+
+	form_class = EditArticleForm
+	if request.method == 'POST':
+		e_form = form_class(request.POST)
+		if e_form.is_valid():
+			edit = EditArticle.objects.create(
+				article = article,
+				title = e_form.cleaned_data['title'],
+				content = e_form.cleaned_data['content'],
+				image = e_form.cleaned_data['image'])
+			edit.save()
+			messages.add_message(request, messages.SUCCESS, message = 'Спасибо за правки!')
+			return redirect('main:home')
+	else:
+		form = EditArticleForm(instance = article)
+		context = {'form':form}
+		return render(request, 'main/article_change_user.html', context)
+
+
 @staff_member_required
 def article_delete(request, pk):
 	article = get_object_or_404(Article, pk = pk)
@@ -174,7 +200,19 @@ class DeleteUserView(LoginRequiredMixin, DeleteView, SuccessMessageMixin):
 			queryset = self.get_queryset()
 		return get_object_or_404(queryset, pk = self.user_id)
 
-
+# views for comments
+def comment_delete(request, pk):
+	comment = get_object_or_404(Comment, pk = pk)
+	if request.user.is_staff or request.user.username == comment.author:
+		if request.method == 'POST':
+			comment.delete()
+			messages.add_message(request, messages.SUCCESS, message = 'Комментарий был удален!')
+			return redirect('main:home')
+		else:
+			context = {'comment':comment}
+			return render(request, 'main/comment_delete.html', context)
+	else:
+		raise Http404
 
 
 
