@@ -44,7 +44,6 @@
 						<div class = 'dropdown-menu'> <!--Раскрывающеся меню--> 
 							<a class = 'dropdown-item' href="{% url 'main:login' %}">Вход</a> 
 							<a class = 'dropdown-item' href="{% url 'main:register' %}">Регистрация</a>
-							<!-- url 'main:user_register' % -->
 						</div>
 					{% endif %}
 				</li>
@@ -55,7 +54,7 @@
 					<li class = 'nav-item dropdown ml-3'><a href="#" class = 'nav-link dropdown-toggle' role = 'button' aria-haspopup = 'true' aria-expended = 'false'>Админка</a>
 						<div class = 'dropdown-menu'> <!--Раскрывающеся меню--> 
 							<a class = 'dropdown-item' href="{% url 'main:add_article' %}">Добавить статью</a>
-							<!-- % url 'main:add_product' % -->
+							<a class = 'dropdown-item' href="/admin">Перейти на Админ. сайт</a>
 						</div>
 					</li>
 				{% endif %}

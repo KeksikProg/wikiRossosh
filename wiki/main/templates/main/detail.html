@@ -18,6 +18,9 @@
 		{% endif %}
 		<div class = 'col'>
 			<h5 class = 'text-right'><a href="{% url 'main:article_change_user' pk=article.pk %}">Исправить ошибку</a></h5>
+			{% if user.is_staff %}
+				<h5 class = 'text-right'><a href="{% url 'main:edit_list' pk=article.pk %}">Посмотреть правки</a></h5>
+			{% endif %}
 			<h2>{{ article.title }}</h2>
 			<p>{{ article.rubric }}</p>
 			<p>{{ article.content }}</p>

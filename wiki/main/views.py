@@ -231,6 +231,13 @@ class UserPassResetConfirmView(PasswordResetConfirmView):
 	success_url = reverse_lazy('main:login')
 
 
+# views for admin site 
+def edit_list(request, pk):
+	article = Article.objects.get(pk = pk)
+	edit_article = EditArticle.objects.filter(article = article)
+	context = {'edit_article':edit_article, 'article':article}
+	return render(request, 'main/edit_list.html', context)
+
 
 
 

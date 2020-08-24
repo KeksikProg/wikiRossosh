@@ -70,6 +70,15 @@ class AdditionalImage(models.Model):
 	image = models.ImageField(
 		upload_to = get_timestamp_path,
 		verbose_name = 'Фотография',)
+
+	def __str__(self):
+		return self.image.url
+
+	class Meta:
+		verbose_name = 'Дополнительная фотография'
+		verbose_name_plural = 'Дополнительные фотографии'
+
+
 class EditArticle(models.Model):
 	article = models.ForeignKey(
 		Article,
@@ -87,6 +96,9 @@ class EditArticle(models.Model):
 		blank = True,
 		upload_to = get_timestamp_path,
 		verbose_name = 'Фотография')
+
+	def __str__(self):
+		return self.article.title
 
 	class Meta:
 		verbose_name = 'Правка'
@@ -109,6 +121,9 @@ class Comment(models.Model):
 		auto_now_add = True,
 		db_index = True,
 		verbose_name = 'Добавлено')
+
+	def __str__(self):
+		return self.article.title
 
 	class Meta:
 		verbose_name = 'Комментарий'
