@@ -85,6 +85,11 @@ class EditArticle(models.Model):
 		on_delete = models.CASCADE,
 		verbose_name = 'Статья')
 
+	help_text = models.CharField(
+		max_length = 200,
+		null = True,
+		verbose_name = 'Кратко объясните изменения')
+
 	title = models.CharField(
 		max_length = 50,
 		verbose_name = 'Название',)

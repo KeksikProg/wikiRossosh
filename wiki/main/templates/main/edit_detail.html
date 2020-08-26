@@ -1,0 +1,30 @@
+{% extends 'layout/basic.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Правки для статьи {{ edit.article.title }}{% endblock %}
+
+{% block content %}
+	<div class = 'text ml-3 p-3'>
+		<!-- original -->
+		<h2>Правки для статьи {{ edit.article.title }}</h2>
+
+		<h2 class = 'my-5'>Оригинал статьи:<h2>
+		<div class = 'row'>
+			{% if article.image %}
+			<div class = 'col-md-auto'>
+				<img class = 'main-image first-image' src="{{ article.image.url }}">
+			</div>
+			{% endif %}
+			<div class = 'col'>
+				<h2>{{ article.title }}</h2>
+				<p>{{ article.content }}</p>
+			</div>
+		</div>
+		<div class  = 'my-5'>
+			<h2>Правки:</h2>
+			<!-- edit -->
+			{% crispy form %}
+		</div>
+	</div>
+{% endblock %}

@@ -128,11 +128,13 @@ class CommentForm(forms.ModelForm):
 	# 		Field('content', css_class = 'form-group col-md-6 mb-0,'),			
 	# 		Submit('submit', 'Оставить комментарий', css_class = 'my-3'))
 
+
 from .models import EditArticle
 class EditArticleForm(forms.ModelForm):
 	class Meta:
 		model = EditArticle
-		fields = ('title', 'content', 'image')
+		fields = ('title', 'content', 'image', 'help_text')
+		widgets = {'help_text':forms.TextInput(attrs = {'placeholder':'основные изменения и где они'})}
 
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
@@ -140,6 +142,7 @@ class EditArticleForm(forms.ModelForm):
 		self.helper.layout = Layout(
 			Row(
 				Column('title', css_class = 'form-group col-md-6 mb-0'),
+				Column('help_text', css_class = 'roup col-md-6 mb-0'),
 				css_class = 'form-row'),
 			
 			'content',

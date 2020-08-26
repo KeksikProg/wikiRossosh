@@ -22,7 +22,6 @@ from django.contrib.auth.decorators import login_required
 
 
 
-
 from .models import Article, Rubric, Comment
 from .forms import ArticleForm, AIFormSet, UserRegForm, ChangeUserInfoForm, CommentForm
 
@@ -35,6 +34,8 @@ def home(request):
 	articles = Article.objects.all()
 	context = {'articles':articles}
 	return render(request, 'main/home.html', context)
+
+
 
 def other(request, page): 
 	# Используется для того чтобы выводить документы различные (ну у меня будут не документы)
@@ -64,6 +65,8 @@ def add_article(request):
 	context = {'forms':forms, 'formset':formset}
 	return render (request, 'main/add_article.html', context)
 
+
+
 @staff_member_required
 def article_change_staff(request, pk):
 	article = get_object_or_404(Article, pk = pk)
@@ -84,29 +87,6 @@ def article_change_staff(request, pk):
 
 
 
-from .forms import EditArticleForm
-from .models import EditArticle
-@login_required(login_url = '/user/login/')
-def article_change_user(request, pk):
-	article = get_object_or_404(Article, pk = pk)
-
-	form_class = EditArticleForm
-	if request.method == 'POST':
-		e_form = form_class(request.POST)
-		if e_form.is_valid():
-			edit = EditArticle.objects.create(
-				article = article,
-				title = e_form.cleaned_data['title'],
-				content = e_form.cleaned_data['content'],
-				image = e_form.cleaned_data['image'])
-			edit.save()
-			messages.add_message(request, messages.SUCCESS, message = 'Спасибо за правки!')
-			return redirect('main:home')
-	else:
-		form = EditArticleForm(instance = article)
-		context = {'form':form}
-		return render(request, 'main/article_change_user.html', context)
-
 
 @staff_member_required
 def article_delete(request, pk):
@@ -118,6 +98,8 @@ def article_delete(request, pk):
 	else:
 		context = {'article':article}
 		return render (request, 'main/article_delete.html', context)
+
+
 
 @login_required(login_url = '/user/login/')
 def article_detail(request, pk):
@@ -160,6 +142,8 @@ class UserRegView(CreateView):
 	form_class = UserRegForm
 	success_url = reverse_lazy('main:login')
 
+
+
 class ChangeUserInfo(SuccessMessageMixin, UpdateView, LoginRequiredMixin):
 	model = User
 	template_name = 'main/change_user_info.html'
@@ -176,10 +160,14 @@ class ChangeUserInfo(SuccessMessageMixin, UpdateView, LoginRequiredMixin):
 			queryset = self.get_queryset()
 		return get_object_or_404(queryset, pk = self.user_id)
 
+
+
 class ChangeUserPass(LoginRequiredMixin, SuccessMessageMixin, PasswordChangeView):
 	template_name = 'main/change_pass.html'
 	success_url = reverse_lazy('main:home')
 	success_message = 'Пароль успешно изменен!'
+
+
 
 class DeleteUserView(LoginRequiredMixin, DeleteView, SuccessMessageMixin):
 	model = User
@@ -199,6 +187,8 @@ class DeleteUserView(LoginRequiredMixin, DeleteView, SuccessMessageMixin):
 		if not queryset:
 			queryset = self.get_queryset()
 		return get_object_or_404(queryset, pk = self.user_id)
+
+
 
 # views for comments
 def comment_delete(request, pk):
@@ -222,21 +212,73 @@ class UserPassResetView(PasswordResetView):
 	subject_template_name = 'email/password_reset_subj.txt'
 	email_template_name = 'email/password_reset_body.html'
 	success_url = reverse_lazy('main:password_reset_done')
-
 class UserPassResetDone(PasswordResetDoneView):
 	template_name = 'main/password_reset_done.html'
-
 class UserPassResetConfirmView(PasswordResetConfirmView):
 	template_name = 'main/password_reset_confirm.html'
 	success_url = reverse_lazy('main:login')
 
 
-# views for admin site 
+# views for edit article
+from .forms import EditArticleForm
+from .models import EditArticle
+
+
+
+@login_required(login_url = '/user/login/')
+def article_change_user(request, pk):
+	article = get_object_or_404(Article, pk = pk)
+
+	form_class = EditArticleForm
+	if request.method == 'POST':
+		e_form = form_class(request.POST)
+		if e_form.is_valid():
+			edit = EditArticle.objects.create(
+				article = article,
+				title = e_form.cleaned_data['title'],
+				help_text = e_form.cleaned_data['help_text'],
+				content = e_form.cleaned_data['content'],
+				image = e_form.cleaned_data['image'])
+			edit.save()
+			messages.add_message(request, messages.SUCCESS, message = 'Спасибо за правки!')
+			return redirect('main:home')
+	else:
+		form = EditArticleForm(instance = article)
+		context = {'form':form}
+		return render(request, 'main/article_change_user.html', context)
+
+
+
+@staff_member_required
+def edit_detail(request, pk):
+	edit = get_object_or_404(EditArticle, pk = pk)
+	article = get_object_or_404(Article, pk = edit.article.pk)
+	form_class = EditArticleForm
+	if request.method == 'POST':
+		e_form = form_class(request.POST)
+		if e_form.is_valid():
+			article.title = e_form.cleaned_data['title']
+			article.content = e_form.cleaned_data['content']
+			if e_form.cleaned_data['image']:
+				article.image = e_form.cleaned_data['image']
+			article.save()
+			edit.delete()
+			messages.add_message(request, messages.SUCCESS, message = 'Правки были приняты!')
+			return redirect('main:home')
+	else:
+		form = form_class(instance = edit)
+		context = {'edit':edit, 'article':article, 'form':form}
+		return render(request, 'main/edit_detail.html', context)
+
+
+
+@staff_member_required
 def edit_list(request, pk):
 	article = Article.objects.get(pk = pk)
 	edit_article = EditArticle.objects.filter(article = article)
 	context = {'edit_article':edit_article, 'article':article}
 	return render(request, 'main/edit_list.html', context)
+
 
 
 

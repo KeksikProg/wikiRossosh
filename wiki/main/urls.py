@@ -5,7 +5,7 @@ from .views import home, other, add_article, ALogin, ALogout, UserRegView
 from .views import UserPassResetView, UserPassResetDone, UserPassResetConfirmView
 from .views import ChangeUserInfo, ChangeUserPass, DeleteUserView, article_change_staff, article_delete
 from .views import article_detail, comment_delete, article_change_user, edit_list
-
+from .views import edit_detail
 
 urlpatterns = [
 
@@ -49,6 +49,7 @@ urlpatterns = [
 
 	# urls for edit article
 	path('article/edit_list/<int:pk>', edit_list, name = 'edit_list'),
+	path('article/edit_detail/<int:pk>', edit_detail, name = 'edit_detail'),
 
 
 
