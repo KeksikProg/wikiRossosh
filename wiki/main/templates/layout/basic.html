@@ -68,8 +68,7 @@
 		<ul class="nav mb-4 ml-4">
 			{% for rubric in rubrics %}
 	  			<li class="nav-item">
-	    			<a href="#" class = 'nav-link root'>   
-	    								<!-- url 'main:by_rubric' pk=rubric.pk                    Жопа не забудь про рубрики --> 
+	    			<a href="{% url 'main:by_rubric' pk=rubric.pk %}" class = 'nav-link root'>   
 						{{ rubric.name }}
 					</a>
 	  			</li>

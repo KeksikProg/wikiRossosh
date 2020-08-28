@@ -45,6 +45,34 @@ def other(request, page):
 		raise Http404 # То ошибка 404 (страница не найдена)
 	return HttpResponse(template.render(request = request))
 
+from django.db.models import Q
+from django.core.paginator import Paginator
+from .forms import SearchForm
+def by_rubric(request, pk):
+
+	# querysets
+	rubric = get_object_or_404(Rubric, pk = pk)
+	articles = Article.objects.filter(rubric = rubric)
+
+	# search
+	if 'keyword' in request.GET:
+		keyword = request.GET['keyword']
+		q = Q(title__icontains = keyword) | Q(content__icontains = keyword)
+		articles = articles.filter(q)
+	else:
+		keyword = ''
+	form = SearchForm(initial = {'keyword':keyword})
+
+	# paginator
+	paginator = Paginator(articles, 4)
+	if 'page' in request.GET:
+		page_num = request.GET['page']
+	else:
+		page_num = 1
+	page = paginator.get_page(page_num)
+	context = {'rubric':rubric, 'page':page, 'articles':page.object_list, 'form':form}
+	return render(request, 'main/by_rubric.html', context)
+
 
 
 # views связанные с статьями

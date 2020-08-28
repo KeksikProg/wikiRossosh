@@ -142,10 +142,16 @@ class EditArticleForm(forms.ModelForm):
 		self.helper.layout = Layout(
 			Row(
 				Column('title', css_class = 'form-group col-md-6 mb-0'),
-				Column('help_text', css_class = 'roup col-md-6 mb-0'),
+				Column('help_text', css_class = 'form-group col-md-6 mb-0'),
 				css_class = 'form-row'),
 			
 			'content',
 			'image',
 
 			Submit('submit', 'Редактировать'))
+
+class SearchForm(forms.Form):
+	keyword = forms.CharField(
+		required = False,
+		max_length = 40,
+		label = '')

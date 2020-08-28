@@ -1,0 +1,58 @@
+{% extends 'layout/basic.html' %}
+
+{% load thumbnail %}
+{% load crispy_forms_tags %}
+{% load static 
+{% load bootstrap4 %}
+
+
+{% block title %}{{ rubric.name }}{% endblock %}
+
+{% block content %}
+<div class = 'container-fluid mb-2'>
+	<div class = 'row'>
+		<div class = 'col'>
+			&nbsp; <!--Тут у нас форма поиска, которая с помощью классов прижата к правому краю страницы-->
+		</div>
+		<form class = 'col-md-auto form-inline' style = 'float: left;'> 
+			{{ form|crispy }}				
+			{% bootstrap_button content='Найти' button_type='submit' %}
+		</form>
+	</div>
+</div>
+<h1 class = 'my-3 ml-3 p-3 mb-2 text'>{{ rubric.name }}</h1> 
+{% if articles %}
+	<ul class = 'list-unstyled'>
+		{% for article in articles %}
+			<li class = 'my-3 ml-3 p-3 media text'>
+				<p>
+					{% if article.image %}
+						{% thumbnail article.image 'default' as timg %}
+						<a href="{% url 'main:article_detail' pk=article.pk %}"><img src="{{ timg.url }}" class = 'mr-5 main-image first-image'></a>
+					{% else %}
+						<p></p>
+					{% endif %}
+				</p>
+				<div class = 'media-body'>
+					<a href="{% url 'main:article_detail' pk=article.pk %}">
+						<h3><p>{{ article.title }}</p></h3> 
+					</a>
+					<a href="#">
+						<!-- Тут потом вставить на rubric_view -->
+						<h5><p>{{ article.rubric.name }}</p></h5>
+					</a>
+					<div>{{ article.content }}</div>
+					<div>{{ article.street }}</div>
+					<p class = 'text-right font-weight-bold'>Добавлено: {{ article.created_at }}</p>
+					{% if user.is_staff %}
+						<a href="{% url 'main:article_delete' pk=article.pk %}" class = 'mr-3'>Удалить</a>
+						<a href="{% url 'main:change_staff' pk=article.pk %}">Изменить</a>
+					{% endif %}
+				</div>
+			</li>
+		{% endfor %}
+	</ul>
+{% else %}
+<h2 class = 'text my-3 p-3 ml-3'>К сожалению в данной рубрике пока нет ничего</h2>
+{% endif %}
+{% endblock %}

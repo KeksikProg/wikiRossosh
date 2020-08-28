@@ -5,7 +5,7 @@ from .views import home, other, add_article, ALogin, ALogout, UserRegView
 from .views import UserPassResetView, UserPassResetDone, UserPassResetConfirmView
 from .views import ChangeUserInfo, ChangeUserPass, DeleteUserView, article_change_staff, article_delete
 from .views import article_detail, comment_delete, article_change_user, edit_list
-from .views import edit_detail
+from .views import edit_detail, by_rubric
 
 urlpatterns = [
 
@@ -23,7 +23,7 @@ urlpatterns = [
 	path('article/article_change_user/<int:pk>/', article_change_user, name = 'article_change_user'),
 	path('article/article_delete/<int:pk>/', article_delete, name = 'article_delete'),
 	path('article/detail/<int:pk>/', article_detail, name = 'article_detail'),
-
+	path('article/rubric/<int:pk>', by_rubric, name = 'by_rubric'),
 
 
 	# urls for users
