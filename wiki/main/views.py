@@ -31,7 +31,8 @@ from .forms import ArticleForm, AIFormSet, UserRegForm, ChangeUserInfoForm, Comm
 # views у которых нет определенного разделения
 def home(request):
 	# будет выводить нлавную страницу
-	articles = Article.objects.all()
+	rubric = get_object_or_404(Rubric, name = 'Новости')
+	articles = Article.objects.filter(rubric = rubric)[:10]
 	context = {'articles':articles}
 	return render(request, 'main/home.html', context)
 
